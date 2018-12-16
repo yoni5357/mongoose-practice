@@ -1,7 +1,6 @@
 /*=====================================================
 Our Setup - 
-we are going to send requests to another API 
-so we need a bit more than usual!
+Feel free to ignore all of this and skip to the questions at the end
 =======================================================*/
 var bodyParser = require('body-parser')
 var express = require('express')
@@ -143,6 +142,10 @@ app.listen(3000, function() {
 Exercises - now that your databases are full 
 and your server is running do the following:
 =======================================================*/
+
+//Important note: Once you've run the above code once, COMMENT IT OUT
+//If you keep re-running this whole file, you'll keep making a ton of requests to the Books API and eventually you will get blocked.
+//DON'T GET BLOCKED
 
 /*Books
 ----------------------*/
