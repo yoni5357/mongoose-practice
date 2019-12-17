@@ -1,5 +1,5 @@
 /*=====================================================
-Our Setup - 
+Our Setup -
 Feel free to ignore all of this and skip to the questions at the end
 =======================================================*/
 var bodyParser = require('body-parser')
@@ -28,7 +28,7 @@ for (var i = 0; i < isbns.length; i++) {
   /*=====================================================
   the first time you run your code, uncomment the function below.
   for subsequent runs, re-comment it so that it runs only once!
-  that said, there is a fail-safe to avoid duplicates below  
+  that said, there is a fail-safe to avoid duplicates below
   =======================================================*/
   loadFromAPI(apiURL)
 }
@@ -45,7 +45,7 @@ function loadFromAPI(apiURL) {
 
       var book = new Book({
         title: resBook.title,
-        author: resBook.authors[0],
+        author: resBook.authors ? resBook.authors[0] : '',
         pages: resBook.pageCount,
         genres: resBook.categories || ["Other"],
         rating: resBook.averageRating || 5
@@ -102,7 +102,7 @@ var getKids = function(numKids) {
 
 /*=====================================================
 the below code always makes sure
-you don't have over 100 people and 
+you don't have over 100 people and
 adds new people and their kids until you do have 100
 
 try to understand how this code works
@@ -139,7 +139,7 @@ app.listen(3000, function() {
 
 
 /*=====================================================
-Exercises - now that your databases are full 
+Exercises - now that your databases are full
 and your server is running do the following:
 =======================================================*/
 
@@ -153,7 +153,7 @@ and your server is running do the following:
 
 //2. Find books whose rating is less than 5, and sort by the author's name
 
-//3. Find all the Fiction books, skip the first 2, and display only 3 of them 
+//3. Find all the Fiction books, skip the first 2, and display only 3 of them
 
 
 /*People
