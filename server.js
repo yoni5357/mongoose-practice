@@ -11,7 +11,12 @@ var mongoose = require('mongoose')
 var Book = require("./models/BookModel")
 var Person = require("./models/PersonModel")
 
-mongoose.connect("mongodb://localhost/mongoose-practice")
+mongoose.connect("mongodb://127.0.0.1:27017/mongoose-practice", {
+  useNewUrlParser: true,
+})
+.then(()=>console.log("conneted to DB"))
+.catch((err)=> console.log(err))
+
 
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
@@ -52,7 +57,7 @@ function loadFromAPI(apiURL) {
       })
 
       //Only save if the book doesn't exist yet
-      Book.findOne({ title: book.title }, function(err, foundBook) {
+      Book.findOne({ title: book.title }).then( function(err, foundBook) {
         if (!foundBook) {
           book.save()
         }
@@ -108,7 +113,7 @@ adds new people and their kids until you do have 100
 try to understand how this code works
 could you write it differently?
 =======================================================*/
-Person.find({}).count(function(err, count) {
+Person.find({}).count().then(function(err, count) {
   // the below two loops could be changed to a simple:
   // for (var i = count; i < 100; i++) {}
   if (count < 100) {

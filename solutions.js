@@ -88,7 +88,7 @@ module.exports = Person;
 //======================================================
 //======================================================
 //======================================================
-Book.find(({pages:{"$lt":500, "$gt":200}}), function(err, books){
+Book.find(({pages:{"$lt":500, "$gt":200}})).then(function(err, books){
 	
 })
 
@@ -104,7 +104,7 @@ Book.find(({pages:{"$lt":500, "$gt":200}}), function(err, books){
 //======================================================
 //======================================================
 //======================================================
-Book.find({rating:{"$lt":5}}).sort({author:-1}).exec( function(err, books) {
+Book.find({rating:{"$lt":5}}).sort({author:-1}).exec().then(function(err, books) {
 
 });
 
@@ -120,7 +120,7 @@ Book.find({rating:{"$lt":5}}).sort({author:-1}).exec( function(err, books) {
 //======================================================
 //======================================================
 //======================================================
-Book.find({genres:"Fiction"}).skip(2).limit(3).exec(function(err, books){
+Book.find({genres:"Fiction"}).skip(2).limit(3).exec().then(function(err, books){
 
 });
 
@@ -136,7 +136,7 @@ Book.find({genres:"Fiction"}).skip(2).limit(3).exec(function(err, books){
 //======================================================
 //======================================================
 //======================================================
-Person.find((	{ height:{"$gt":180}, salary:{"$gt":30000}	}), function(err, people){
+Person.find((	{ height:{"$gt":180}, salary:{"$gt":30000}	})).then( function(err, people){
 	
 })
 
@@ -152,7 +152,7 @@ Person.find((	{ height:{"$gt":180}, salary:{"$gt":30000}	}), function(err, peopl
 //======================================================
 //======================================================
 //======================================================
-Person.find( { $or:[ {height:{"$gt":180}}, {salary:{"$gt":30000}}]}, function(err,people){
+Person.find( { $or:[ {height:{"$gt":180}}, {salary:{"$gt":30000}}]}).then( function(err,people){
 
 });
 
@@ -169,7 +169,7 @@ Person.find( { $or:[ {height:{"$gt":180}}, {salary:{"$gt":30000}}]}, function(er
 Person.find().and([
 		{ $or: [{hair:"grey"}, {eyes:"grey"}] },
 		{	weight:{"$lt": 70}	}
-	]).exec(function(err, people){
+	]).exec().then(function(err, people){
 		console.log(people)
 	})
 
@@ -184,7 +184,7 @@ Person.find().and([
 //======================================================
 //======================================================
 //======================================================
-Person.find({kids:{$elemMatch:{hair:"grey"}}}).exec(function(err,people){
+Person.find({kids:{$elemMatch:{hair:"grey"}}}).exec().then(function(err,people){
 	
 	//this is just to show you that this works
 	for(p in people){
@@ -208,7 +208,7 @@ Person.find({kids:{$elemMatch:{hair:"grey"}}}).exec(function(err,people){
 Person.find().and([
 		{weight: {"$gt":100}},
 		{kids:{$elemMatch:{weight: {"$gt":100}}}}
-	]).exec(function(err, people){
+	]).exec().then(function(err, people){
 		//this is just to show you that this works
 		for(p in people){
 			var person = people[p];
