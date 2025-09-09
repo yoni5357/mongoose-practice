@@ -4,6 +4,8 @@ Feel free to ignore all of this and skip to the questions at the end
 =======================================================*/
 var bodyParser = require('body-parser')
 var express = require('express')
+var dotenv = require('dotenv');
+dotenv.config();
 var app = express()
 
 var request = require('request')
@@ -11,7 +13,7 @@ var mongoose = require('mongoose')
 var Book = require("./models/BookModel")
 var Person = require("./models/PersonModel")
 
-mongoose.connect("mongodb://127.0.0.1:27017/mongoose-practice", {
+mongoose.connect(process.env.DB_CONNECTION, {
   useNewUrlParser: true,
 })
 .then(()=>console.log("conneted to DB"))
@@ -28,43 +30,43 @@ Create books Collection
 var isbns = [9780156012195, 9780743273565, 9780435905484, 9780140275360, 9780756404741, 9780756407919, 9780140177398, 9780316769488, 9780062225672, 9780143130154, 9780307455925, 9781501143519]
 var url = "https://www.googleapis.com/books/v1/volumes?q=isbn:"
 
-for (var i = 0; i < isbns.length; i++) {
-  var apiURL = url + isbns[i];
-  /*=====================================================
-  the first time you run your code, uncomment the function below.
-  for subsequent runs, re-comment it so that it runs only once!
-  that said, there is a fail-safe to avoid duplicates below
-  =======================================================*/
-  loadFromAPI(apiURL)
-}
-console.log("done");
+// for (var i = 0; i < isbns.length; i++) {
+//   var apiURL = url + isbns[i];
+//   /*=====================================================
+//   the first time you run your code, uncomment the function below.
+//   for subsequent runs, re-comment it so that it runs only once!
+//   that said, there is a fail-safe to avoid duplicates below
+//   =======================================================*/
+//   loadFromAPI(apiURL)
+// }
+// console.log("done");
 
-function loadFromAPI(apiURL) {
+// function loadFromAPI(apiURL) {
 
-  request(apiURL, function(error, response, body) {
+//   request(apiURL, function(error, response, body) {
 
-    var result = JSON.parse(body)
+//     var result = JSON.parse(body)
 
-    if (result.totalItems && !error && response.statusCode == 200) {
-      var resBook = JSON.parse(body).items[0].volumeInfo
+//     if (result.totalItems && !error && response.statusCode == 200) {
+//       var resBook = JSON.parse(body).items[0].volumeInfo
 
-      var book = new Book({
-        title: resBook.title,
-        author: resBook.authors ? resBook.authors[0] : '',
-        pages: resBook.pageCount,
-        genres: resBook.categories || ["Other"],
-        rating: resBook.averageRating || 5
-      })
+//       var book = new Book({
+//         title: resBook.title,
+//         author: resBook.authors ? resBook.authors[0] : '',
+//         pages: resBook.pageCount,
+//         genres: resBook.categories || ["Other"],
+//         rating: resBook.averageRating || 5
+//       })
 
-      //Only save if the book doesn't exist yet
-      Book.findOne({ title: book.title }).then( function(err, foundBook) {
-        if (!foundBook) {
-          book.save()
-        }
-      })
-    }
-  })
-}
+//       //Only save if the book doesn't exist yet
+//       Book.findOne({ title: book.title }).then( function(err, foundBook) {
+//         if (!foundBook) {
+//           book.save()
+//         }
+//       })
+//     }
+//   })
+// }
 
 
 /*=====================================================
@@ -155,10 +157,19 @@ and your server is running do the following:
 /*Books
 ----------------------*/
 //1. Find books with fewer than 500 but more than 200 pages
+Book.find({pages: {$lt: 500, $gt: 200}}).then( (books) => {
+  console.log(books)
+})
 
 //2. Find books whose rating is less than 5, and sort by the author's name
+Book.find({rating: {$lt: 5}}).sort({author: 1}).then( (books) => {
+  console.log(books)
+})
 
 //3. Find all the Fiction books, skip the first 2, and display only 3 of them
+Book.find({genres: "Fiction"}).skip(2).limit(3).then( (books) => {
+  console.log(books)
+})
 
 
 /*People
